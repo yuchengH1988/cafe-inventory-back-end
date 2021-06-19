@@ -50,9 +50,9 @@ const userController = {
   updateUser: async (req, res, next) => {
     try {
       let user = req.user
-      const { file } = req
-      console.log('file', file)
-      const { name, email, password, checkPassword } = req.body
+
+      const { name, email, checkPassword } = req.body
+      let { password } = req.body
       if (!name || !email || !password || !checkPassword) {
         return res.status(400).json({ status: 'error', message: 'name, email, password, checkPassword are required!' })
       }
@@ -60,19 +60,18 @@ const userController = {
       if (password !== checkPassword) {
         return res.status(400).json({ status: 'error', message: 'password & checkPassword must be same!' })
       }
-      //判斷名稱是否存在
-      const repeatUser = await User.find({ name })
-      if (repeatUser.length) { return res.status(409).json({ status: 'error', message: 'this name has been used!' }) }
+      password = bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
 
       //圖片處理
+      const { files } = req
+
       imgur.setClientID(IMGUR_CLIENT_ID)
-      const imgAvatar = files.avatar ? await uploadImg(files.avatar[0].path) : null
+      const imgAvatar = files ? await uploadImg(files.avatar[0].path) : null
       const avatar = imgAvatar ? imgAvatar.data.link : user.avatar
 
       user = await User.findByIdAndUpdate(user._id, { name, email, password, avatar }, { useFindAndModify: false, new: true })
 
       return res.status(200).json({ status: 'success', message: `user ${user.name} ${user.account} have been updated`, user })
-
 
     } catch (error) {
       console.log(error)
