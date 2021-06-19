@@ -36,7 +36,6 @@ const adminController = {
   toggelAdmin: async (req, res, next) => {
     try {
       const _id = req.params.id
-      console.log('id: ', _id)
       let user = await User.findById(_id)
       user.isAdmin = user.isAdmin ? false : true
       await user.save()
