@@ -8,5 +8,6 @@ const { authenticated, authenticatedAdmin } = require('../middleware/auth')
 
 router.post('/users', authenticated, authenticatedAdmin, adminController.createUser)
 router.put('/users/:id', authenticated, authenticatedAdmin, adminController.toggelAdmin)
+router.delete('/users/:id', authenticated, authenticatedAdmin, adminController.deleteUser)
 
 module.exports = router

@@ -45,6 +45,21 @@ const adminController = {
       console.log(error)
       return next(error)
     }
+  },
+  deleteUser: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await User.findByIdAndDelete(_id, (err) => {
+        if (err) {
+          return res.status(404).json({ status: 'error', message: "Can't delete this User." })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'The User has removed successfully!' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
   }
 }
 module.exports = adminController
