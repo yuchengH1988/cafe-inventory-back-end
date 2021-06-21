@@ -9,7 +9,6 @@ const Ingredient = require('../ingredient')
 //載入model
 const Composition = require('../composition')
 const Product = require('../product')
-const ingredient = require('../ingredient')
 db.once('open', async () => {
   try {
     await Product.insertMany(products)

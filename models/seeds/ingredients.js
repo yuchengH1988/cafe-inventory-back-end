@@ -1,6 +1,6 @@
 const ingredients = [
   {
-    name: '咖啡(店豆)',
+    name: '咖啡豆',
     unit: 1,
     unitName: '克',
     unit2: 450,
