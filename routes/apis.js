@@ -14,8 +14,8 @@ router.put('/users', authenticated, uploadProfile, userController.updateUser)
 router.post('/calculator', authenticated, recordController.recordCalculator)
 router.post('/records', authenticated, recordController.createRecord)
 router.put('/records/:dateId', authenticated, recordController.updateRecord)
-router.put('/records/:dateId', authenticated, recordController.updateRecord)
 router.delete('/records/:dateId', authenticated, recordController.deleteRecord)
 router.get('/records/:dateId', authenticated, recordController.getRecordsByDate)
+// router.get('/records/', authenticated, recordController.getRecords)
 
 module.exports = router

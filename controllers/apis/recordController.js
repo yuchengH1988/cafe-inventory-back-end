@@ -4,22 +4,16 @@ const Composition = require('../../models/composition')
 const Record = require('../../models/record')
 const moment = require('moment')
 
-const dummyData = {
-  黑咖啡: 20,
-  拿鐵: 25,
-  卡布奇諾: 15,
-}
-
 const recordController = {
   recordCalculator: async (req, res, next) => {
     try {
-      // const data = req.body
+      // const {data} = req.body
       const ingredients = await Ingredient.find({})
       const products = await Product.find({})
       const compositions = await Composition.find().populate('productId').populate('ingredientId')
       //將body的值分開，辨識key值取用value值
-      let keys = Object.keys(dummyData)
-      let values = Object.values(dummyData)
+      let keys = Object.keys(data)
+      let values = Object.values(data)
       let results = []
       ingredients.forEach(ingredient => {
         results.push({
@@ -75,8 +69,9 @@ const recordController = {
     try {
       const { dateId } = req.params
       const { ingredientName, actualUsed, estimateUsed, newDate } = req.body
+      const authorId = req.user._id
       const newDateId = newDate ? moment(newDate).format('YYYYMMDD') : dateId
-      let record = await Record.findOneAndUpdate({ dateId, ingredientName }, { dateId: newDateId, actualUsed, estimateUsed }, { useFindAndModify: false, new: true }
+      let record = await Record.findOneAndUpdate({ dateId, ingredientName, authorId }, { dateId: newDateId, actualUsed, estimateUsed }, { useFindAndModify: false, new: true }
       )
       return res.status(200).json({ status: 'success', message: ' Record has been updated.' })
     } catch (error) {
@@ -88,7 +83,8 @@ const recordController = {
     try {
       const { dateId } = req.params
       const { ingredientName } = req.body
-      await Record.findOneAndDelete({ dateId, ingredientName }, (err) => {
+      const authorId = req.user._id
+      await Record.findOneAndDelete({ dateId, ingredientName, authorId }, (err) => {
         if (err) {
           return res.status(404).json({ status: 'error', message: "Can't delete this record." })
         } else {
@@ -103,12 +99,18 @@ const recordController = {
   getRecordsByDate: async (req, res, next) => {
     try {
       const { dateId } = req.params
-      const records = await Record.find({ dateId }).lean()
+      const authorId = req.user._id
+      const records = await Record.find({ dateId, authorId }).lean()
       return res.status(200).json({ status: 'success', records })
     } catch (error) {
       console.log(error)
       next(error)
     }
-  }
+  },
+  // getRecords: async (req, res, next) => {
+  //   try { } catch (error) {
+
+  //   }
+  // }
 }
 module.exports = recordController
