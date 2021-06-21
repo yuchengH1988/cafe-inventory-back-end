@@ -11,5 +11,7 @@ const { authenticated } = require('../middleware/auth')
 router.post('/signin', userController.signIn)
 router.put('/users', authenticated, uploadProfile, userController.updateUser)
 router.post('/calculator', authenticated, recordController.recordCalculator)
+router.post('/records', authenticated, recordController.createRecord)
+router.put('/records/:dateId', authenticated, recordController.updateRecord)
 
 module.exports = router

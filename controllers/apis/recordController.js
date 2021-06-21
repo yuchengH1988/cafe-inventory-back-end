@@ -70,9 +70,19 @@ const recordController = {
       console.log(error)
       next(error)
     }
+  },
+  updateRecord: async (req, res, next) => {
+    try {
+      const { dateId } = req.params
+      const { ingredientName, actualUsed, estimateUsed, newDate } = req.body
+      const newDateId = newDate ? moment(newDate).format('YYYYMMDD') : dateId
+      let record = await Record.findOneAndUpdate({ dateId, ingredientName }, { dateId: newDateId, actualUsed, estimateUsed }, { useFindAndModify: false, new: true }
+      )
+      return res.status(200).json({ status: 'success', message: ' Record has been updated.' })
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
   }
-
-
-
 }
 module.exports = recordController

@@ -69,9 +69,9 @@ const userController = {
       const imgAvatar = files ? await uploadImg(files.avatar[0].path) : null
       const avatar = imgAvatar ? imgAvatar.data.link : user.avatar
 
-      user = await User.findByIdAndUpdate(user._id, { name, email, password, avatar }, { useFindAndModify: false, new: true })
+      await User.findByIdAndUpdate(user._id, { name, email, password, avatar }, { useFindAndModify: false, new: true })
 
-      return res.status(200).json({ status: 'success', message: `user ${user.name} ${user.account} have been updated`, user })
+      return res.status(200).json({ status: 'success', message: `user ${user.name} ${user.account} have been updated` })
 
     } catch (error) {
       console.log(error)
