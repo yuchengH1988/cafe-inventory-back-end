@@ -13,17 +13,17 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  estimate: {
+  businessDay: {
+    type: String,
+    require: true
+  }
+  ,
+  actualUsed: {
     type: Number,
     required: true,
     default: 0
   },
-  actual: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  error: {
+  estimateUsed: {
     type: Number,
     required: true,
     default: 0
