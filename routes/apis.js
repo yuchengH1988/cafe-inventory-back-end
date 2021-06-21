@@ -16,5 +16,6 @@ router.post('/records', authenticated, recordController.createRecord)
 router.put('/records/:dateId', authenticated, recordController.updateRecord)
 router.put('/records/:dateId', authenticated, recordController.updateRecord)
 router.delete('/records/:dateId', authenticated, recordController.deleteRecord)
+router.get('/records/:dateId', authenticated, recordController.getRecordsByDate)
 
 module.exports = router

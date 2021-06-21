@@ -99,6 +99,16 @@ const recordController = {
       console.log(error)
       next(error)
     }
+  },
+  getRecordsByDate: async (req, res, next) => {
+    try {
+      const { dateId } = req.params
+      const records = await Record.find({ dateId }).lean()
+      return res.status(200).json({ status: 'success', records })
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
   }
 }
 module.exports = recordController
