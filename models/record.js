@@ -1,19 +1,15 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const userSchema = new Schema({
-  date: {
-    type: time,
-    required: true
-  },
   authorId: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  ingredientId: {
+  ingredientName: {
     type: String,
     required: true
   },
-  businessDay: {
+  dateId: {
     type: String,
     require: true
   }
