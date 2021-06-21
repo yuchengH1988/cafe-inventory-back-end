@@ -1,7 +1,8 @@
 const Product = require('../../models/product')
 const Ingredient = require('../../models/ingredient')
 const Composition = require('../../models/composition')
-const ingredient = require('../../models/ingredient')
+const Record = require('../../models/record')
+const moment = require('moment')
 
 const dummyData = {
   黑咖啡: 20,
@@ -12,6 +13,7 @@ const dummyData = {
 const recordController = {
   recordCalculator: async (req, res, next) => {
     try {
+      // const data = req.body
       const ingredients = await Ingredient.find({})
       const products = await Product.find({})
       const compositions = await Composition.find().populate('productId').populate('ingredientId')
@@ -44,6 +46,26 @@ const recordController = {
       }
 
       return res.status(200).json({ status: 'success', results })
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  },
+  createRecord: async (req, res, next) => {
+    try {
+      const { actualUsed, estimateUsed, ingredientName, businessDay } = req.body
+      const authorId = req.user._id
+      const dateId = moment(businessDay).format('YYYYMMDD')
+
+      const record = await Record.findOne({ dateId, ingredientName })
+      if (record) {
+        return res.status(401).json({ status: 'error', message: 'this record is existed!' })
+      }
+      let result = await Record.create({
+        dateId, authorId, actualUsed, estimateUsed, ingredientName
+      })
+
+      return res.status(200).json({ status: 'success', message: ' New record has been built.' })
     } catch (error) {
       console.log(error)
       next(error)
