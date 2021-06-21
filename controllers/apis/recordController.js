@@ -83,6 +83,22 @@ const recordController = {
       console.log(error)
       next(error)
     }
+  },
+  deleteRecord: async (req, res, next) => {
+    try {
+      const { dateId } = req.params
+      const { ingredientName } = req.body
+      await Record.findOneAndDelete({ dateId, ingredientName }, (err) => {
+        if (err) {
+          return res.status(404).json({ status: 'error', message: "Can't delete this record." })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'The record has removed successfully!' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
   }
 }
 module.exports = recordController
