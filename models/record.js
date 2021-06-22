@@ -5,9 +5,9 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  ingredientName: {
-    type: String,
-    required: true
+  ingredientId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Ingredient'
   },
   dateId: {
     type: String,

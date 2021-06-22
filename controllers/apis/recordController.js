@@ -9,7 +9,6 @@ const recordController = {
     try {
       // const {data} = req.body
       const ingredients = await Ingredient.find({})
-      const products = await Product.find({})
       const compositions = await Composition.find().populate('productId').populate('ingredientId')
       //將body的值分開，辨識key值取用value值
       let keys = Object.keys(data)
@@ -47,16 +46,16 @@ const recordController = {
   },
   createRecord: async (req, res, next) => {
     try {
-      const { actualUsed, estimateUsed, ingredientName, businessDay } = req.body
+      const { actualUsed, estimateUsed, ingredientId, businessDay } = req.body
       const authorId = req.user._id
       const dateId = moment(businessDay).format('YYYYMMDD')
 
-      const record = await Record.findOne({ dateId, ingredientName })
+      const record = await Record.findOne({ dateId, ingredientId })
       if (record) {
         return res.status(401).json({ status: 'error', message: 'this record is existed!' })
       }
       let result = await Record.create({
-        dateId, authorId, actualUsed, estimateUsed, ingredientName
+        dateId, authorId, actualUsed, estimateUsed, ingredientId
       })
 
       return res.status(200).json({ status: 'success', message: ' New record has been built.' })
@@ -68,10 +67,10 @@ const recordController = {
   updateRecord: async (req, res, next) => {
     try {
       const { dateId } = req.params
-      const { ingredientName, actualUsed, estimateUsed, newDate } = req.body
+      const { ingredientId, actualUsed, estimateUsed, newDate } = req.body
       const authorId = req.user._id
       const newDateId = newDate ? moment(newDate).format('YYYYMMDD') : dateId
-      let record = await Record.findOneAndUpdate({ dateId, ingredientName, authorId }, { dateId: newDateId, actualUsed, estimateUsed }, { useFindAndModify: false, new: true }
+      let record = await Record.findOneAndUpdate({ dateId, ingredientId, authorId }, { dateId: newDateId, actualUsed, estimateUsed }, { useFindAndModify: false, new: true }
       )
       return res.status(200).json({ status: 'success', message: ' Record has been updated.' })
     } catch (error) {
@@ -82,9 +81,9 @@ const recordController = {
   deleteRecord: async (req, res, next) => {
     try {
       const { dateId } = req.params
-      const { ingredientName } = req.body
+      const { ingredientId } = req.body
       const authorId = req.user._id
-      await Record.findOneAndDelete({ dateId, ingredientName, authorId }, (err) => {
+      await Record.findOneAndDelete({ dateId, ingredientId, authorId }, (err) => {
         if (err) {
           return res.status(404).json({ status: 'error', message: "Can't delete this record." })
         } else {
@@ -110,7 +109,7 @@ const recordController = {
   getRecords: async (req, res, next) => {
     try {
       const filter = { authorId: req.user._id }
-      const { year, month, ingredientName } = req.query
+      const { year, month, ingredientId } = req.query
       let months = []
       for (let i = 1; i <= 12; i++) {
         let m = i
@@ -126,8 +125,8 @@ const recordController = {
       console.log('months:', months)
       //月份判斷
       let timeSet = '^'
-      if (ingredientName) {
-        filter.ingredientName = ingredientName
+      if (ingredientId) {
+        filter.ingredientId = ingredientId
       }
       if (year && month) {
         timeSet += year + month + '0'
