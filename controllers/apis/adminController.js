@@ -177,6 +177,23 @@ const adminController = {
       return next(error)
     }
   },
+  createIngredient: async (req, res, next) => {
+    try {
+      const { name, unit, unitName, unit2, unit2Name } = req.body
+      const ingredient = await Ingredient.find({ name })
+      if (ingredient.length !== 0) {
+        return res.status(400).json({ status: 'error', message: 'This name have been registed in ingredient' })
+      }
+      await Ingredient.create({
+        name, unit, unitName, unit2, unit2Name
+      })
+      return res.status(200).json({ status: 'success', message: 'New ingredient have been built.' })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+
 
 
   // : async (req, res, next)=>{

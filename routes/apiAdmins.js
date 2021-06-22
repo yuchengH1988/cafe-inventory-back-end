@@ -18,6 +18,8 @@ router.delete('/products/:id', authenticated, authenticatedAdmin, adminControlle
 
 router.get('/ingredients/', authenticated, authenticatedAdmin, adminController.getIngredients)
 router.get('/ingredients/:id', authenticated, authenticatedAdmin, adminController.getIngredient)
+router.post('/ingredients/', authenticated, authenticatedAdmin, adminController.createIngredient)
+
 
 
 
