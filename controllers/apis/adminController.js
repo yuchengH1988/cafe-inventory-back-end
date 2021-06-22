@@ -152,7 +152,7 @@ const adminController = {
     try {
       await Ingredient.find({}, (err, ingredients) => {
         if (err) {
-          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
+          return res.status(400).json({ status: 'error', message: 'Can\'t find ingredients' })
         } else {
           return res.status(200).json({ status: 'success', ingredients })
         }
@@ -162,6 +162,22 @@ const adminController = {
       return next(error)
     }
   },
+  getIngredient: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await Ingredient.findById(_id, (err, ingredient) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this ingredient' })
+        } else {
+          return res.status(200).json({ status: 'success', ingredient })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+
 
   // : async (req, res, next)=>{
   // try { } catch (error) {

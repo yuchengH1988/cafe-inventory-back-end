@@ -17,6 +17,8 @@ router.post('/products/', authenticated, authenticatedAdmin, adminController.cre
 router.delete('/products/:id', authenticated, authenticatedAdmin, adminController.deleteProduct)
 
 router.get('/ingredients/', authenticated, authenticatedAdmin, adminController.getIngredients)
+router.get('/ingredients/:id', authenticated, authenticatedAdmin, adminController.getIngredient)
+
 
 
 
