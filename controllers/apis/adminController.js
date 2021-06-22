@@ -131,9 +131,22 @@ const adminController = {
       console.log(error)
       return next(error)
     }
+  },
+  deleteProduct: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await Product.findByIdAndDelete(_id, (err) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find the id' })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'Product has been deleted.' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
   }
-
-
 
   // : async (req, res, next)=>{
   // try { } catch (error) {
