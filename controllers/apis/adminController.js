@@ -1,4 +1,5 @@
 const User = require('../../models/user')
+const Product = require('../../models/product')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -69,10 +70,27 @@ const adminController = {
       console.log(error)
       return next(error)
     }
-  }
+  },
+  createProduct: async (req, res, next) => {
+    try {
+      const { name, size, price } = req.body
+      const product = await Product.find({ name, size })
+      if (product.length !== 0) {
+        return res.status(400).json({ status: 'error', message: 'Both name and size have been registed at same product' })
+      }
+      await Product.create({
+        name, size, price
+      })
+      return res.status(200).json({ status: 'success', message: 'Product have been built.' })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
 
 
-  // : async (req, res, next){
+
+  // : async (req, res, next)=>{
   // try { } catch (error) {
   //   console.log(error)
   //   return next(error)

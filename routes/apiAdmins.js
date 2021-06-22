@@ -11,4 +11,6 @@ router.post('/users', authenticated, authenticatedAdmin, adminController.createU
 router.put('/users/:id', authenticated, authenticatedAdmin, adminController.toggelAdmin)
 router.delete('/users/:id', authenticated, authenticatedAdmin, adminController.deleteUser)
 
+router.post('/products/', authenticated, authenticatedAdmin, adminController.createProduct)
+
 module.exports = router
