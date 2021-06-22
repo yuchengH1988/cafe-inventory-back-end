@@ -1,6 +1,7 @@
 const User = require('../../models/user')
 const Product = require('../../models/product')
 const Ingredient = require('../../models/ingredient')
+const Composition = require('../../models/composition')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -193,6 +194,52 @@ const adminController = {
       return next(error)
     }
   },
+  updateIngredient: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      const { name, unit, unitName, unit2, unit2Name } = req.body
+      await Ingredient.findByIdAndUpdate(_id, { name, unit, unitName, unit2, unit2Name }, { useFindAndModify: false, new: true }, (err) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find the id' })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'Ingredient has been updated.' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+  deleteIngredient: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await Ingredient.findByIdAndDelete(_id, (err) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find the id' })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'Ingredient has been deleted.' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+  getCompositions: async (req, res, next) => {
+    try {
+      await Composition.find({}, (err, compositions) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find the product' })
+        } else {
+          return res.status(200).json({ status: 'success', compositions })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+
 
 
 
