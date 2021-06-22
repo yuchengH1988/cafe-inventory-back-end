@@ -115,6 +115,22 @@ const adminController = {
       console.log(error)
       return next(error)
     }
+  },
+  updateProduct: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      const { name, size, price } = req.body
+      await Product.findByIdAndUpdate(_id, { name, size, price }, { useFindAndModify: false, new: true }, (err) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find the id' })
+        } else {
+          return res.status(200).json({ status: 'success', message: 'Product has been updated.' })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
   }
 
 
