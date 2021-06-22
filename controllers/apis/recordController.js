@@ -99,8 +99,10 @@ const recordController = {
     try {
       const { dateId } = req.params
       const authorId = req.user._id
+      const ingredients = await Ingredient.find({})
+      const Products = await Product.find({})
       const records = await Record.find({ dateId, authorId }).lean()
-      return res.status(200).json({ status: 'success', records })
+      return res.status(200).json({ status: 'success', records, ingredients, Products })
     } catch (error) {
       console.log(error)
       next(error)

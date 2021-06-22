@@ -1,5 +1,6 @@
 const User = require('../../models/user')
 const Product = require('../../models/product')
+const Ingredient = require('../../models/ingredient')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -146,7 +147,21 @@ const adminController = {
       console.log(error)
       return next(error)
     }
-  }
+  },
+  getIngredients: async (req, res, next) => {
+    try {
+      await Ingredient.find({}, (err, ingredients) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
+        } else {
+          return res.status(200).json({ status: 'success', ingredients })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
 
   // : async (req, res, next)=>{
   // try { } catch (error) {

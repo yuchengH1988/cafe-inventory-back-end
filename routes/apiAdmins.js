@@ -16,5 +16,8 @@ router.put('/products/:id', authenticated, authenticatedAdmin, adminController.u
 router.post('/products/', authenticated, authenticatedAdmin, adminController.createProduct)
 router.delete('/products/:id', authenticated, authenticatedAdmin, adminController.deleteProduct)
 
+router.get('/ingredients/', authenticated, authenticatedAdmin, adminController.getIngredients)
+
+
 
 module.exports = router
