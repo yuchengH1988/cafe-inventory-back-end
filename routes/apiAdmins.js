@@ -25,6 +25,7 @@ router.delete('/ingredients/:id', authenticated, authenticatedAdmin, adminContro
 router.get('/compositions', authenticated, authenticatedAdmin, adminController.getCompositions)
 router.get('/compositions/:id', authenticated, authenticatedAdmin, adminController.getComposition)
 router.post('/compositions', authenticated, authenticatedAdmin, adminController.createComposition)
+router.put('/compositions/:id', authenticated, authenticatedAdmin, adminController.updateComposition)
 
 
 
