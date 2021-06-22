@@ -305,6 +305,45 @@ const adminController = {
       return next(error)
     }
   },
+  getRecords: async (req, res, next) => {
+    try {
+      const filter = {}
+      const { year, month, ingredientId, authorId } = req.query
+      let months = []
+      for (let i = 1; i <= 12; i++) {
+        let m = i
+        if (i < 10) {
+          m = '0' + i
+        } else {
+          m = m.toString()
+        }
+        months.push({ id: i, name: m })
+      }
+      let years = [moment().format('YYYYMM'), moment().add(-1, 'y').format('YYYY')]
+
+      if (ingredientId) {
+        filter.ingredientId = ingredientId
+      }
+      if (authorId) {
+        filter.authorId = authorId
+      }
+      //月份判斷
+      let timeSet = '^'
+      if (year && month) {
+        timeSet += year + month + '0'
+      } else {
+        timeSet += moment().format('YYYYMM')
+      }
+      filter.dateId = { $regex: timeSet }
+      console.log('filter:', filter)
+      const records = await Record.find(filter).sort({ dateId: 1 })
+
+      return res.status(200).json({ status: 'success', records, months, years })
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  }
 
 
 

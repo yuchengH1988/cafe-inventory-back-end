@@ -28,6 +28,8 @@ router.post('/compositions', authenticated, authenticatedAdmin, adminController.
 router.put('/compositions/:id', authenticated, authenticatedAdmin, adminController.updateComposition)
 router.delete('/compositions/:id', authenticated, authenticatedAdmin, adminController.deleteComposition)
 
+router.get('/records', authenticated, authenticatedAdmin, adminController.getRecords)
+
 
 
 
