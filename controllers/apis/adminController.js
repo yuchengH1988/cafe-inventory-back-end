@@ -60,6 +60,23 @@ const adminController = {
       console.log(error)
       return next(error)
     }
+  },
+  getUsers: async (req, res, next) => {
+    try {
+      const users = await User.find({})
+      return res.status(200).json({ status: 'success', users })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
   }
+
+
+  // : async (req, res, next){
+  // try { } catch (error) {
+  //   console.log(error)
+  //   return next(error)
+  // }
+
 }
 module.exports = adminController
