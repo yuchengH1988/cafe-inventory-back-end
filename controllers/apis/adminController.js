@@ -87,6 +87,23 @@ const adminController = {
       return next(error)
     }
   },
+  getProduct: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await Product.findById(_id, (err, product) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
+        } else {
+          return res.status(200).json({ status: 'success', product })
+        }
+      }
+      )
+
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
 
 
 
@@ -94,7 +111,7 @@ const adminController = {
   // try { } catch (error) {
   //   console.log(error)
   //   return next(error)
-  // }
+  // }}
 
 }
 module.exports = adminController
