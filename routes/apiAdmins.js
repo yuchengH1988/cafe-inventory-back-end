@@ -13,16 +13,18 @@ router.delete('/users/:id', authenticated, authenticatedAdmin, adminController.d
 router.get('/products', authenticated, authenticatedAdmin, adminController.getProducts)
 router.get('/products/:id', authenticated, authenticatedAdmin, adminController.getProduct)
 router.put('/products/:id', authenticated, authenticatedAdmin, adminController.updateProduct)
-router.post('/products/', authenticated, authenticatedAdmin, adminController.createProduct)
+router.post('/products', authenticated, authenticatedAdmin, adminController.createProduct)
 router.delete('/products/:id', authenticated, authenticatedAdmin, adminController.deleteProduct)
 
 router.get('/ingredients', authenticated, authenticatedAdmin, adminController.getIngredients)
 router.get('/ingredients/:id', authenticated, authenticatedAdmin, adminController.getIngredient)
-router.post('/ingredients/', authenticated, authenticatedAdmin, adminController.createIngredient)
+router.post('/ingredients', authenticated, authenticatedAdmin, adminController.createIngredient)
 router.put('/ingredients/:id', authenticated, authenticatedAdmin, adminController.updateIngredient)
 router.delete('/ingredients/:id', authenticated, authenticatedAdmin, adminController.deleteIngredient)
 
 router.get('/compositions', authenticated, authenticatedAdmin, adminController.getCompositions)
+router.get('/compositions/:id', authenticated, authenticatedAdmin, adminController.getComposition)
+router.post('/compositions', authenticated, authenticatedAdmin, adminController.createComposition)
 
 
 

@@ -239,6 +239,39 @@ const adminController = {
       return next(error)
     }
   },
+  getComposition: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      await Composition.findById(_id, (err, compositon) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this ingredient' })
+        } else {
+          return res.status(200).json({ status: 'success', compositon })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+  createComposition: async (req, res, next) => {
+    try {
+      const { quantity, ingredientId, productId } = req.body
+      const composition = await Composition.find({ ingredientId, productId })
+      if (!quantity || quantity == 0) {
+        return res.status(400).json({ status: 'error', message: 'Quantity can\'t be 0.' })
+      }
+      if (composition.length !== 0) {
+        return res.status(400).json({ status: 'error', message: 'This composition have already registed' })
+      }
+      await Composition.create({ quantity, ingredientId, productId })
+      return res.status(200).json({ status: 'success', message: 'New composition have been built.' })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+
 
 
 
