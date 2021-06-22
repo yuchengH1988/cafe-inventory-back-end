@@ -96,14 +96,26 @@ const adminController = {
         } else {
           return res.status(200).json({ status: 'success', product })
         }
-      }
-      )
-
+      })
     } catch (error) {
       console.log(error)
       return next(error)
     }
   },
+  getProducts: async (req, res, next) => {
+    try {
+      await Product.find({}, (err, products) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
+        } else {
+          return res.status(200).json({ status: 'success', products })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  }
 
 
 
