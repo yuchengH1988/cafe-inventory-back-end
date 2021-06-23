@@ -344,17 +344,5 @@ const adminController = {
       next(error)
     }
   }
-
-
-
-
-
-
-  // : async (req, res, next)=>{
-  // try { } catch (error) {
-  //   console.log(error)
-  //   return next(error)
-  // }}
-
 }
 module.exports = adminController

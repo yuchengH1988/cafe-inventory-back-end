@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -10,7 +11,8 @@ const app = express()
 const PORT = process.env.PORT
 
 app.use(bodyParser.urlencoded({ extended: true }))
-
+app.use(bodyParser.json())
+app.use(cors())
 app.use((err, req, res, next) => {
   if (err) {
     res.status(500).json({ message: String(err) })
