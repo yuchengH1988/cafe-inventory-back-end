@@ -7,7 +7,7 @@ const moment = require('moment')
 const recordController = {
   recordCalculator: async (req, res, next) => {
     try {
-      // const {data} = req.body
+      const data = req.body
       const ingredients = await Ingredient.find({})
       const compositions = await Composition.find().populate('productId').populate('ingredientId')
       //將body的值分開，辨識key值取用value值
@@ -99,10 +99,8 @@ const recordController = {
     try {
       const { dateId } = req.params
       const authorId = req.user._id
-      const ingredients = await Ingredient.find({})
-      const Products = await Product.find({})
       const records = await Record.find({ dateId, authorId }).lean()
-      return res.status(200).json({ status: 'success', records, ingredients, Products })
+      return res.status(200).json({ status: 'success', records })
     } catch (error) {
       console.log(error)
       next(error)
@@ -144,6 +142,35 @@ const recordController = {
       console.log(error)
       next(error)
     }
-  }
+  },
+  getProducts: async (req, res, next) => {
+    try {
+      await Product.find({}, (err, products) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
+        } else {
+          return res.status(200).json({ status: 'success', products })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+  getIngredients: async (req, res, next) => {
+    try {
+      await Ingredient.find({}, (err, ingredients) => {
+        if (err) {
+          return res.status(400).json({ status: 'error', message: 'Can\'t find ingredients' })
+        } else {
+          return res.status(200).json({ status: 'success', ingredients })
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+
 }
 module.exports = recordController

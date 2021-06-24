@@ -40,7 +40,14 @@ const userController = {
         status: 'success',
         message: 'ok',
         token: token,
-        user
+        user: {
+          id: user._id,
+          name: user.name,
+          account: user.account,
+          email: user.email,
+          avatar: user.avatar,
+          isAdmin: user.isAdmin
+        }
       })
     } catch (error) {
       console.log(error)
@@ -79,16 +86,26 @@ const userController = {
     }
   }
   ,
-  // getUser: async (req, res, next) => {
-  //   try {
-  //     const _id = req.params.id
-  //     const user = await User.findById(_id)
-  //     return res.status(200).json(user)
-  //   } catch (error) {
-  //     console.log(error)
-  //     return next(error)
-  //   }
-  // }
+  getUser: async (req, res, next) => {
+    try {
+      const _id = req.params.id
+      const user = await User.findById(_id)
+      return res.status(200).json(user)
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  },
+  getCurrentUser: async (req, res, next) => {
+    return res.json({
+      id: req.user._id,
+      name: req.user.name,
+      account: req.user.account,
+      email: req.user.email,
+      avatar: req.user.avatar,
+      isAdmin: req.user.isAdmin
+    })
+  }
 }
 
 module.exports = userController

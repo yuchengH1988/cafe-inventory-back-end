@@ -10,13 +10,12 @@ router.post('/users', authenticated, authenticatedAdmin, adminController.createU
 router.put('/users/:id', authenticated, authenticatedAdmin, adminController.toggelAdmin)
 router.delete('/users/:id', authenticated, authenticatedAdmin, adminController.deleteUser)
 
-router.get('/products', authenticated, authenticatedAdmin, adminController.getProducts)
+
 router.get('/products/:id', authenticated, authenticatedAdmin, adminController.getProduct)
 router.put('/products/:id', authenticated, authenticatedAdmin, adminController.updateProduct)
 router.post('/products', authenticated, authenticatedAdmin, adminController.createProduct)
 router.delete('/products/:id', authenticated, authenticatedAdmin, adminController.deleteProduct)
 
-router.get('/ingredients', authenticated, authenticatedAdmin, adminController.getIngredients)
 router.get('/ingredients/:id', authenticated, authenticatedAdmin, adminController.getIngredient)
 router.post('/ingredients', authenticated, authenticatedAdmin, adminController.createIngredient)
 router.put('/ingredients/:id', authenticated, authenticatedAdmin, adminController.updateIngredient)

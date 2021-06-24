@@ -104,20 +104,6 @@ const adminController = {
       return next(error)
     }
   },
-  getProducts: async (req, res, next) => {
-    try {
-      await Product.find({}, (err, products) => {
-        if (err) {
-          return res.status(400).json({ status: 'error', message: 'Can\'t find this product' })
-        } else {
-          return res.status(200).json({ status: 'success', products })
-        }
-      })
-    } catch (error) {
-      console.log(error)
-      return next(error)
-    }
-  },
   updateProduct: async (req, res, next) => {
     try {
       const _id = req.params.id
@@ -149,20 +135,7 @@ const adminController = {
       return next(error)
     }
   },
-  getIngredients: async (req, res, next) => {
-    try {
-      await Ingredient.find({}, (err, ingredients) => {
-        if (err) {
-          return res.status(400).json({ status: 'error', message: 'Can\'t find ingredients' })
-        } else {
-          return res.status(200).json({ status: 'success', ingredients })
-        }
-      })
-    } catch (error) {
-      console.log(error)
-      return next(error)
-    }
-  },
+
   getIngredient: async (req, res, next) => {
     try {
       const _id = req.params.id
