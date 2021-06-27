@@ -282,7 +282,7 @@ const adminController = {
     try {
       const filter = {}
       const { year, month, ingredientId, authorId } = req.query
-      let months = []
+      let months = [{ value: "", name: '近一個月內' }]
       for (let i = 1; i <= 12; i++) {
         let m = i
         if (i < 10) {
@@ -290,9 +290,9 @@ const adminController = {
         } else {
           m = m.toString()
         }
-        months.push({ id: i, name: m })
+        months.push({ value: m, name: i + '月' })
       }
-      let years = [moment().format('YYYYMM'), moment().add(-1, 'y').format('YYYY')]
+      let years = [moment().format('YYYY'), moment().add(-1, 'y').format('YYYY')]
 
       if (ingredientId) {
         filter.ingredientId = ingredientId

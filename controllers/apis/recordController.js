@@ -16,6 +16,7 @@ const recordController = {
       let results = []
       ingredients.forEach(ingredient => {
         results.push({
+          _id: ingredient._id,
           name: ingredient.name,
           unit: ingredient.unit,
           unitName: ingredient.unitName,
@@ -46,9 +47,8 @@ const recordController = {
   },
   createRecord: async (req, res, next) => {
     try {
-      const { actualUsed, estimateUsed, ingredientId, businessDay } = req.body
+      const { actualUsed, estimateUsed, ingredientId, dateId } = req.body
       const authorId = req.user._id
-      const dateId = moment(businessDay).format('YYYYMMDD')
 
       const record = await Record.findOne({ dateId, ingredientId })
       if (record) {
@@ -81,9 +81,8 @@ const recordController = {
   deleteRecord: async (req, res, next) => {
     try {
       const { dateId } = req.params
-      const { ingredientId } = req.body
       const authorId = req.user._id
-      await Record.findOneAndDelete({ dateId, ingredientId, authorId }, (err) => {
+      await Record.deleteMany({ dateId, authorId }, (err) => {
         if (err) {
           return res.status(404).json({ status: 'error', message: "Can't delete this record." })
         } else {
@@ -118,23 +117,21 @@ const recordController = {
         } else {
           m = m.toString()
         }
-        months.push({ id: i, name: m })
+        months.push({ value: m, name: i + '月' })
       }
-      let years = [moment().format('YYYYMM'), moment().add(-1, 'y').format('YYYY')]
+      let years = [moment().format('YYYY'), moment().add(-1, 'y').format('YYYY')]
 
-      console.log('months:', months)
       //月份判斷
       let timeSet = '^'
       if (ingredientId) {
         filter.ingredientId = ingredientId
       }
       if (year && month) {
-        timeSet += year + month + '0'
+        timeSet += year + month
       } else {
         timeSet += moment().format('YYYYMM')
       }
       filter.dateId = { $regex: timeSet }
-      console.log('filter:', filter)
       const records = await Record.find(filter).sort({ dateId: 1 })
 
       return res.status(200).json({ status: 'success', records, months, years })

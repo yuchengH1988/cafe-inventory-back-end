@@ -41,7 +41,7 @@ const userController = {
         message: 'ok',
         token: token,
         user: {
-          id: user._id,
+          _id: user._id,
           name: user.name,
           account: user.account,
           email: user.email,
@@ -60,6 +60,7 @@ const userController = {
 
       const { name, email, checkPassword } = req.body
       let { password } = req.body
+
       if (!name || !email || !password || !checkPassword) {
         return res.status(400).json({ status: 'error', message: 'name, email, password, checkPassword are required!' })
       }
@@ -71,12 +72,14 @@ const userController = {
 
       //圖片處理
       const { files } = req
-
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      const imgAvatar = files ? await uploadImg(files.avatar[0].path) : null
-      const avatar = imgAvatar ? imgAvatar.data.link : user.avatar
-
-      await User.findByIdAndUpdate(user._id, { name, email, password, avatar }, { useFindAndModify: false, new: true })
+      if (files.avatar) {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        const imgAvatar = files ? await uploadImg(files.avatar[0].path) : null
+        const avatar = imgAvatar ? imgAvatar.data.link : user.avatar
+        await User.findByIdAndUpdate(user._id, { name, email, password, avatar }, { useFindAndModify: false, new: true })
+      } else {
+        await User.findByIdAndUpdate(user._id, { name, email, password }, { useFindAndModify: false, new: true })
+      }
 
       return res.status(200).json({ status: 'success', message: `user ${user.name} ${user.account} have been updated` })
 
@@ -98,7 +101,7 @@ const userController = {
   },
   getCurrentUser: async (req, res, next) => {
     return res.json({
-      id: req.user._id,
+      _id: req.user._id,
       name: req.user.name,
       account: req.user.account,
       email: req.user.email,
