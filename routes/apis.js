@@ -13,7 +13,6 @@ router.post('/signin', userController.signIn)
 
 router.get('/users/current', authenticated, userController.getCurrentUser)
 router.get('/users/:id', authenticated, userController.getUser)
-
 router.put('/users', authenticated, uploadProfile, userController.updateUser)
 
 router.get('/products', authenticated, recordController.getProducts)

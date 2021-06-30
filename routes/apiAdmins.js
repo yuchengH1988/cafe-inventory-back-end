@@ -8,7 +8,7 @@ const { authenticated, authenticatedAdmin } = require('../middleware/auth')
 
 router.get('/users', authenticated, authenticatedAdmin, adminController.getUsers)
 router.post('/users', authenticated, authenticatedAdmin, multer().array(), adminController.createUser)
-router.put('/users/:id', authenticated, authenticatedAdmin, adminController.toggelAdmin)
+router.put('/users/:id', authenticated, authenticatedAdmin, adminController.toggleAdmin)
 router.delete('/users/:id', authenticated, authenticatedAdmin, adminController.deleteUser)
 
 

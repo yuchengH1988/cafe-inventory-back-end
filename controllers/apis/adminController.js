@@ -40,7 +40,7 @@ const adminController = {
       return next(error)
     }
   },
-  toggelAdmin: async (req, res, next) => {
+  toggleAdmin: async (req, res, next) => {
     try {
       const _id = req.params.id
       let user = await User.findById(_id)
@@ -219,11 +219,11 @@ const adminController = {
   getComposition: async (req, res, next) => {
     try {
       const _id = req.params.id
-      await Composition.findById(_id, (err, compositon) => {
+      await Composition.findById(_id, (err, composition) => {
         if (err) {
           return res.status(400).json({ status: 'error', message: 'Can\'t find this ingredient' })
         } else {
-          return res.status(200).json({ status: 'success', compositon })
+          return res.status(200).json({ status: 'success', composition })
         }
       })
     } catch (error) {
