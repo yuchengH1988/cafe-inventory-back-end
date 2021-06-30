@@ -109,18 +109,6 @@ const recordController = {
     try {
       const filter = { authorId: req.user._id }
       const { year, month, ingredientId } = req.query
-      let months = []
-      for (let i = 1; i <= 12; i++) {
-        let m = i
-        if (i < 10) {
-          m = '0' + i
-        } else {
-          m = m.toString()
-        }
-        months.push({ value: m, name: i + '月' })
-      }
-      let years = [moment().format('YYYY'), moment().add(-1, 'y').format('YYYY')]
-
       //月份判斷
       let timeSet = '^'
       if (ingredientId) {
@@ -134,7 +122,7 @@ const recordController = {
       filter.dateId = { $regex: timeSet }
       const records = await Record.find(filter).sort({ dateId: 1 })
 
-      return res.status(200).json({ status: 'success', records, months, years })
+      return res.status(200).json({ status: 'success', records })
     } catch (error) {
       console.log(error)
       next(error)

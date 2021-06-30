@@ -1,14 +1,17 @@
 const User = require('../../models/user')
 const Product = require('../../models/product')
+const Record = require('../../models/record')
 const Ingredient = require('../../models/ingredient')
 const Composition = require('../../models/composition')
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
 
 const adminController = {
   createUser: async (req, res, next) => {
     try {
       const { account, name, email, password, checkPassword, isAdmin } = req.body
       // 確認 account & name & email & password & checkPassword 必填
+      console.log(account, name, email, password, checkPassword, isAdmin)
       if (!account || !name || !email || !password || !checkPassword) {
         return res.status(400).json({ status: 'error', message: 'account, name, email, password, checkPassword are required!' })
       }
@@ -16,6 +19,7 @@ const adminController = {
       if (password !== checkPassword) {
         return res.status(400).json({ status: 'error', message: 'password & checkPassword must be same!' })
       }
+
       // 確認 email 格式正確
       const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
       if (!emailRule.test(email)) {
@@ -282,36 +286,25 @@ const adminController = {
     try {
       const filter = {}
       const { year, month, ingredientId, authorId } = req.query
-      let months = [{ value: "", name: '近一個月內' }]
-      for (let i = 1; i <= 12; i++) {
-        let m = i
-        if (i < 10) {
-          m = '0' + i
-        } else {
-          m = m.toString()
-        }
-        months.push({ value: m, name: i + '月' })
-      }
-      let years = [moment().format('YYYY'), moment().add(-1, 'y').format('YYYY')]
-
       if (ingredientId) {
         filter.ingredientId = ingredientId
       }
       if (authorId) {
         filter.authorId = authorId
+      } else {
+        return res.status(400).json({ status: 'error', message: '請輸入使用者' })
       }
       //月份判斷
       let timeSet = '^'
       if (year && month) {
-        timeSet += year + month + '0'
+        timeSet += year + month
       } else {
         timeSet += moment().format('YYYYMM')
       }
       filter.dateId = { $regex: timeSet }
-      console.log('filter:', filter)
       const records = await Record.find(filter).sort({ dateId: 1 })
 
-      return res.status(200).json({ status: 'success', records, months, years })
+      return res.status(200).json({ status: 'success', records })
     } catch (error) {
       console.log(error)
       next(error)
